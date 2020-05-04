@@ -1,7 +1,7 @@
 
 from django import forms
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
@@ -14,18 +14,18 @@ class RegisterForm(forms.ModelForm):
     def clean_password2(self):
         user = self.cleaned_data
         if user['password2'] != user['password']:
-            raise ValidationError('Hasła nie są identyczne.')
+            raise forms.ValidationError('Hasła nie są identyczne.')
         return user['password2']
 
     def clean_email(self):
         user = self.cleaned_data
         if User.objects.filter(username=user['email']).exists():
-            raise ValidationError('Użytkownik o takim emailu już istnieje!')
+            raise forms.ValidationError('Użytkownik o takim emailu już istnieje!')
         return user['email']
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username']
+        fields = ['first_name', 'last_name', 'email']
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)

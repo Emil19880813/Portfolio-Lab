@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
@@ -53,7 +52,7 @@ class Register(View):
             new_user.set_password(form.cleaned_data.get('password'))
             new_user.username = form.cleaned_data.get('email')
             new_user.save()
-            return HttpResponse('ok')
+            return redirect('login')
         return render(request, 'register.html', context={'form': form})
 
 class FormConfirmationView(TemplateView):
