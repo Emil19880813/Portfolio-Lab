@@ -79,11 +79,17 @@
               <div class="title">Fundacja "{{ foundation.name }}"</div>
               <div class="subtitle">Cel i misja: {{ foundation.description }}.</div>
             </div>
-
-            <div class="col"><div class="text">{{ foundation.categories.name }}</div></div>
+            <div class="col">
+                <div class="text">
+            {% for cat in foundation.categories.all %}
+                {{ cat.name }}
+            {% endfor %}
+                </div>
+            </div>
         </li>
         {% endfor %}
     </ul>
+
     <ul class="help--slides-pagination">
         {% for num_page in foundations.paginator.page_range %}
             {% ifequal num_page foundations.number %}
@@ -103,83 +109,65 @@
       quos suscipit corporis!
     </p>
     <ul class="help--slides-items">
-      <li>
-        <div class="col">
-          <div class="title">Organizacja 1</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
-        </div>
+        {% for organisation in organisations %}
+          <li>
+            <div class="col">
+              <div class="title">{{ organisation.name }}</div>
+              <div class="subtitle">{{ organisation.description }}</div>
+            </div>
 
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
-      </li>
-
-      <li>
-        <div class="col">
-          <div class="title">Organizacja 2</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
-        </div>
-
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
-      </li>
-
-      <li>
-        <div class="col">
-          <div class="title">Organizacja 3</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
-        </div>
-
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
-      </li>
-
-      <li>
-        <div class="col">
-          <div class="title">Organizacja 4</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
-        </div>
-
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
-      </li>
+            <div class="col">
+                <div class="text">
+                    {% for cat in organisation.categories.all %}
+                        {{ cat.name }}
+                    {% endfor %}
+                </div>
+            </div>
+          </li>
+        {% endfor %}
     </ul>
 
-    <!-- Pagination
     <ul class="help--slides-pagination">
-      <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
+        {% for num_page in organisations.paginator.page_range %}
+            {% ifequal num_page organisations.number %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border active" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% else %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% endifequal %}
+        {% endfor %}
     </ul>
-    -->
   </div>
 
   <!-- SLIDE 3 -->
   <div class="help--slides" data-id="3">
     <p>Lorem ipsum dolor sit amet, his ocurreret persequeris ea, ad utinam laudem duo. Verterem adipisci partiendo eos ne, ea his reque quaeque recteque, ne quo lobortis intellegam.</p>
     <ul class="help--slides-items">
+        {% for local in locals %}
       <li>
         <div class="col">
-          <div class="title">Lokalna zbiórka 1</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+          <div class="title">{{ local.name }}</div>
+          <div class="subtitle">{{ local.name }}</div>
         </div>
 
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
-      </li>
-
-      <li>
         <div class="col">
-          <div class="title">Lokalna zbiórka 2</div>
-          <div class="subtitle">Lorem ipsum dolor sit amet consectetur.</div>
+            <div class="text">
+                {% for cat in local.categories.all %}
+                    {{ cat.name }}
+                {% endfor %}
+            </div>
         </div>
-
-        <div class="col"><div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div></div>
       </li>
+        {% endfor %}
     </ul>
-
-    <!-- Pagination
     <ul class="help--slides-pagination">
-      <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
+        {% for num_page in locals.paginator.page_range %}
+            {% ifequal num_page locals.number %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border active" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% else %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% endifequal %}
+        {% endfor %}
     </ul>
-    -->
   </div>
 </section>
 {% endblock %}
