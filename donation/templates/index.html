@@ -7,13 +7,13 @@
 <section id="stats" class="stats">
   <div class="container container--85">
     <div class="stats--item">
-      <em>10</em>
+      <em>{{ donations }}</em>
       <h3>Oddanych worków</h3>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
     </div>
 
     <div class="stats--item">
-      <em>5</em>
+      <em>{{ institutions }}</em>
       <h3>Wspartych organizacji</h3>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas quam.</p>
     </div>
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <a href="#" class="btn btn--large">Załóż konto</a>
+  <a href="{% url 'register' %}" class="btn btn--large">Załóż konto</a>
 </section>
 
 <section id="about-us" class="about-us">
@@ -73,40 +73,26 @@
     <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
 
     <ul class="help--slides-items">
-      <li>
-        <div class="col">
-          <div class="title">Fundacja "Dbam o Zdrowie"</div>
-          <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
-        </div>
+        {% for foundation in foundations %}
+        <li>
+            <div class="col">
+              <div class="title">Fundacja "{{ foundation.name }}"</div>
+              <div class="subtitle">Cel i misja: {{ foundation.description }}.</div>
+            </div>
 
-        <div class="col"><div class="text">ubrania, jedzenie, sprzęt AGD, meble, zabawki</div></div>
-      </li>
-
-      <li>
-        <div class="col">
-          <div class="title">Fundacja “Dla dzieci"</div>
-          <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
-        </div>
-
-        <div class="col"><div class="text">ubrania, meble, zabawki</div></div>
-      </li>
-
-      <li>
-        <div class="col">
-          <div class="title">Fundacja “Bez domu”</div>
-          <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
-        </div>
-
-        <div class="col"><div class="text">ubrania, jedzenie, ciepłe koce</div></div>
-      </li>
+            <div class="col"><div class="text">{{ foundation.categories.name }}</div></div>
+        </li>
+        {% endfor %}
     </ul>
-    <!-- Pagination
     <ul class="help--slides-pagination">
-      <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-      <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
+        {% for num_page in foundations.paginator.page_range %}
+            {% ifequal num_page foundations.number %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border active" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% else %}
+                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border" data-page="{{ num_page }}">{{ num_page }}</a></li>
+            {% endifequal %}
+        {% endfor %}
     </ul>
-    -->
   </div>
 
 
@@ -198,17 +184,3 @@
 </section>
 {% endblock %}
 
-{% block extra_footer %}
-<div id="contact" class="contact">
-  <h2>Skontaktuj się z nami</h2>
-  <h3>Formularz kontaktowy</h3>
-  <form class="form--contact">
-    <div class="form-group form-group--50"><input type="text" name="name" placeholder="Imię" /></div>
-    <div class="form-group form-group--50"><input type="text" name="surname" placeholder="Nazwisko" /></div>
-
-    <div class="form-group"><textarea name="message" placeholder="Wiadomość" rows="1"></textarea></div>
-
-    <button class="btn" type="submit">Wyślij</button>
-  </form>
-</div>
-{% endblock %}
