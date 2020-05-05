@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj hasło'}))
@@ -38,3 +40,24 @@ class RegisterForm(forms.ModelForm):
             Field('password', placeholder='Podaj hasło'),
             Field('password2', placeholder='Powtórz hasło')
         )
+
+class LoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Hasło'}))
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        try:
+            User.objects.get(username=username)
+            return username
+        except ObjectDoesNotExist:
+            raise forms.ValidationError('Niepoprawna nazwa użytkownika')
+
+    def clean_password(self):
+        if 'username' in self.cleaned_data:
+            username = self.cleaned_data['username']
+            password = self.cleaned_data['password']
+            user = User.objects.get(username=username)
+            if user.check_password(password):
+                return password
+            raise forms.ValidationError('Niepoprawne hasło')

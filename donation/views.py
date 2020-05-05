@@ -1,11 +1,13 @@
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
 
-from donation.forms import RegisterForm
+from donation.forms import RegisterForm, LoginForm
 from donation.models import Donation, Institution
 
 '''
@@ -38,8 +40,30 @@ class LandingPage(View):
 class AddDonation(TemplateView):
     template_name = "form.html"
 
-class Login(TemplateView):
-    template_name = "login.html"
+class Login(View):
+    def get(self, request):
+        login_form = LoginForm()
+        return render(request, "login.html", context={"form": login_form})
+    def post(self, request):
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            data = login_form.cleaned_data
+            user = authenticate(username=data['username'], password=data['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    return HttpResponse('Konto jest zablokowane')
+            else:
+                return redirect('register')
+        return redirect('register')
+
+class Logout(View):
+    def get(self, request):
+        logout(request)
+        return redirect('register')
+
 
 class Register(View):
     def get(self, request):
