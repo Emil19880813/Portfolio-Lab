@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Sum
@@ -8,7 +9,7 @@ from django.views.generic import TemplateView
 from django.views import View
 
 from donation.forms import RegisterForm, LoginForm
-from donation.models import Donation, Institution
+from donation.models import Donation, Institution, Category
 
 '''
 class LandingPage(TemplateView):
@@ -37,8 +38,10 @@ class LandingPage(View):
                                               "organisations": num_of_pages(organisations),
                                               "locals": num_of_pages(locals)})
 
-class AddDonation(TemplateView):
-    template_name = "form.html"
+class AddDonation(LoginRequiredMixin, View):
+    def get(self, request):
+        cat = Category.objects.all()
+        return render(request, 'form.html', context={'categories': cat})
 
 class Login(View):
     def get(self, request):
