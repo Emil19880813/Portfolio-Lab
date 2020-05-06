@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Panel administracyjny {% endblock %}
+
+{% block content %}
+<section class="admin" id="admin">
+  <h2>Zarządzaj użytkownikami</h2>
+
+  <div class="table-responsive col-sm-3 mt-3">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nazwa użytkownika</th>
+                <th>Super użytkownik?</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+              <tr>
+                <th>
+                    <a href="{% url 'edit-user' user.id %}#edit-user" class="btn btn--without-border">{{ user.username }}</a>
+                </th>
+                <th>{{ user.is_superuser }}</th>
+                <th><a href="{% url 'delete-user' user.id %}"><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a></th>
+              </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+</section>
+{% endblock %}

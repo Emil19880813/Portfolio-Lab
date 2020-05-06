@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
 
-from donation.forms import RegisterForm, LoginForm
+from donation.forms import RegisterForm, LoginForm, UserForm
 from donation.models import Donation, Institution, Category
 
 '''
@@ -40,8 +40,10 @@ class LandingPage(View):
 
 class AddDonation(LoginRequiredMixin, View):
     def get(self, request):
-        cat = Category.objects.all()
-        return render(request, 'form.html', context={'categories': cat})
+        categories = Category.objects.all()
+        institutions = Institution.objects.all()
+        return render(request, 'form.html', context={'categories': categories, 'institutions': institutions})
+
 
 class Login(View):
     def get(self, request):
@@ -81,6 +83,28 @@ class Register(View):
             new_user.save()
             return redirect('login')
         return render(request, 'register.html', context={'form': form})
+
+class AdminPanel(View):
+    def get(self, request):
+        users = User.objects.all()
+        return render(request, 'panel-admin.html', context={'users': users})
+
+class EditUser(View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        user_form = UserForm(instance=user)
+        return render(request, "edit_user.html", context={"form": user_form})
+    def post(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        user_form = UserForm(request.POST, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('p-admin')
+
+class DeleteUser(View):
+    def get(self, request, user_id):
+        User.objects.get(pk=user_id).delete()
+        return redirect('p-admin')
 
 class FormConfirmationView(TemplateView):
     template_name = "form-confirmation.html"

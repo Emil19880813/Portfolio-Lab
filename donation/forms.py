@@ -61,3 +61,15 @@ class LoginForm(forms.Form):
             if user.check_password(password):
                 return password
             raise forms.ValidationError('Niepoprawne hasło')
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'is_superuser', 'is_active']
+        labels = {
+            'username': 'nazwaużytkownika',
+            'first_name': 'imię',
+            'last_name': 'nazwisko',
+            'is_superuser': 'super użytkownik',
+            'is_active': 'konto aktywne',
+        }
