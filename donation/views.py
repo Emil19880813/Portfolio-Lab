@@ -126,7 +126,10 @@ class DeleteUser(View):
 class ProfilUser(View):
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
-        return render(request, "profil_user.html", context={"user": user})
+        donation_list = user.donations.all()
+        archived_donations = Donation.objects.filter(pk=user_id, is_taken=True)
+        return render(request, "profil_user.html", context={"user": user, 'donations': donation_list})
+
 
 
 class FormConfirmationView(TemplateView):

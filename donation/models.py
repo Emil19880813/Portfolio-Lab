@@ -24,10 +24,11 @@ class Donation(models.Model):
     pick_up_time = models.TimeField(null=False)
     pick_up_comment = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='donations')
+    is_taken = models.BooleanField(null=True)
 
     def __str__(self):
         return f"""( worki - {self.quantity} , kategorie - {", ".join(category.name for category in self.categories.all())}, 
-                    instytucja - {self.institution.name}, użytkownik - {self.user.username})"""
+                    instytucja - {self.institution.name})"""
 
 
 class Institution(models.Model):
