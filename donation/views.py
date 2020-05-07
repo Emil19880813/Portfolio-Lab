@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -15,8 +16,11 @@ from donation.models import Donation, Institution, Category
 class LandingPage(TemplateView):
     template_name = "index.html"
 '''
+@admin.register(Institution)
+class InstitutionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'type')
 
-class LandingPage(View):
+class LandingPage(LoginRequiredMixin, View):
     def get(self, request):
         donations = list(Donation.objects.aggregate(Sum('quantity')).values())[0]
         institutions = len([donation.institution.name for donation in Donation.objects.all().distinct('institution')])
@@ -25,7 +29,7 @@ class LandingPage(View):
         locals = Institution.objects.filter(type="Zbiórka lokalna")
 
         def num_of_pages(obj):
-            p = Paginator(obj, 3) # show 5 objects per page.
+            p = Paginator(obj, 3) # show 3 objects per page.
             page_number = request.GET.get('page')
 
             if page_number is None:
@@ -89,6 +93,18 @@ class AdminPanel(View):
         users = User.objects.all()
         return render(request, 'panel-admin.html', context={'users': users})
 
+
+class AddUser(View):
+    def get(self, request):
+        user_form = UserForm()
+        return render(request, "add_user.html", context={"form": user_form})
+    def post(self, request):
+        user_form = UserForm(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+        return redirect('p-admin')
+
+
 class EditUser(View):
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
@@ -105,6 +121,13 @@ class DeleteUser(View):
     def get(self, request, user_id):
         User.objects.get(pk=user_id).delete()
         return redirect('p-admin')
+
+
+class ProfilUser(View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        return render(request, "profil_user.html", context={"user": user})
+
 
 class FormConfirmationView(TemplateView):
     template_name = "form-confirmation.html"

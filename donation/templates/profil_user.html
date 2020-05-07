@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Profil użytkownika {% endblock %}
+
+{% block content %}
+<section class="profil-user" id="profil-user">
+    <h2 class="account-heading">Profil użytkownika:</h2>
+    <div class="user"><em class="mt-2"><b>nazwa użytkownika:</b> {{ user.username }}</em></div>
+    <div class="user"><em><b>imię:</b> {{ user.first_name }}</em></div>
+    <div class="user"><em><b>nazwisko:</b> {{ user.last_name }}</em></div>
+</section>
+{% endblock content %}

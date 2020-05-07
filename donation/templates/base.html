@@ -16,20 +16,21 @@
                 <li class="logged-user">
                     Witaj {{ user.first_name }}!
                     <ul class="dropdown">
-                      <li><a href="#">Profil</a></li>
+                      <li><a href="{% url 'profil' user.id %}">Profil</a></li>
                       <li><a href="#">Ustawienia</a></li>
                       <li><a href="{% url 'logout' %}">Wyloguj</a></li>
                       {% if user.is_superuser %}
                         <li><a href="{% url 'p-admin' %}#admin">Panel administracyjny</a></li>
+                        <li><a href="/admin">Django Admin</a></li>
                       {% endif %}
                     </ul>
                 </li>
             {% else %}
                 <li>
-                    <a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a>
+                    <a href="{% url 'login' %}#login-page" class="btn btn--small btn--without-border">Zaloguj</a>
                 </li>
                 <li>
-                    <a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a>
+                    <a href="{% url 'register' %}#login-page" class="btn btn--small btn--highlighted">Załóż konto</a>
                 </li>
             {% endif %}
         </ul>

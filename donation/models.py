@@ -25,6 +25,10 @@ class Donation(models.Model):
     pick_up_comment = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='donations')
 
+    def __str__(self):
+        return f"""( worki - {self.quantity} , kategorie - {", ".join(category.name for category in self.categories.all())}, 
+                    instytucja - {self.institution.name}, użytkownik - {self.user.username})"""
+
 
 class Institution(models.Model):
     INSTITUTIONS = (

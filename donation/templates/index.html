@@ -93,9 +93,9 @@
     <ul class="help--slides-pagination">
         {% for num_page in foundations.paginator.page_range %}
             {% ifequal num_page foundations.number %}
-                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border active" data-page="{{ num_page }}">{{ num_page }}</a></li>
+                <li><a href="/?page={{ num_page }}#help" class="btn btn--small btn--without-border active" data-page="{{ num_page }}">{{ num_page }}</a></li>
             {% else %}
-                <li><a href="?page={{ num_page }}/#help" class="btn btn--small btn--without-border" data-page="{{ num_page }}">{{ num_page }}</a></li>
+                <li><a href="/?page={{ num_page }}#help" class="btn btn--small btn--without-border" data-page="{{ num_page }}">{{ num_page }}</a></li>
             {% endifequal %}
         {% endfor %}
     </ul>

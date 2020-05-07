@@ -1504,6 +1504,17 @@ header nav ul li:last-of-type {
   margin: 0 8px;
 }
 
+.profil-user {
+  padding-bottom: 50px;
+}
+
+.user {
+  font-size: 2rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center
+}
+
 /* line 1, scss/modules/_footer.scss */
 footer {
   min-height: 80vh;
