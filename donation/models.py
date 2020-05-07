@@ -20,11 +20,12 @@ class Donation(models.Model):
     phone_number = models.IntegerField(null=False, blank=True)
     city = models.CharField(max_length=128, null=False)
     zip_code = models.CharField(max_length=6, blank=True)
-    pick_up_date = models.DateField(null=False)
-    pick_up_time = models.TimeField(null=False)
+    pick_up_date = models.DateField(null=True, blank=True)
+    pick_up_time = models.TimeField(null=True, blank=True)
     pick_up_comment = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='donations')
     is_taken = models.BooleanField(null=True)
+    date_of_entry = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"""( worki - {self.quantity} , kategorie - {", ".join(category.name for category in self.categories.all())}, 

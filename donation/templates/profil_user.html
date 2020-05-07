@@ -9,11 +9,25 @@
     <div class="user"><em><b>nazwa użytkownika:</b> {{ user.username }}</em></div>
     <div class="user"><em><b>imię:</b> {{ user.first_name }}</em></div>
     <div class="user"><em><b>nazwisko:</b> {{ user.last_name }}</em></div>
-    <div class="user"><em>
+    <div class="is_taken"><em>
         <b>lista darów:</b>
         <ul>
             {% for donation in donations %}
-            <li>{{ donation }}</li>
+            <li>{{ donation }},
+                {% if donation.pick_up_date == null or donation.pick_up_time == null %}
+                    data odbioru: ---
+                {% else %}
+                    data odbioru: {{ donation.pick_up_date }}, {{ donation.pick_up_time }},
+                {% endif %}
+                    data wpisu: {{ donation.date_of_entry }},
+                odebrany:
+                {% if donation.is_taken %}
+                    <!-- do zrobienia walidacji pól zależnych "is_taken" i "data odbioru" -->
+                    <b class="true--donation">TAK</b>
+                {% else %}
+                    <b class="false--donation">NIE</b>
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
         </em>

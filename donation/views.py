@@ -126,8 +126,8 @@ class DeleteUser(View):
 class ProfilUser(View):
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
-        donation_list = user.donations.all()
-        archived_donations = Donation.objects.filter(pk=user_id, is_taken=True)
+        donation_list = user.donations.all().order_by('is_taken', 'pick_up_date', 'pick_up_time', 'date_of_entry')
+        #archived_donations = Donation.objects.filter(pk=user_id, is_taken=True).
         return render(request, "profil_user.html", context={"user": user, 'donations': donation_list})
 
 

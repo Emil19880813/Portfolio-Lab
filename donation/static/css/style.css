@@ -1515,6 +1515,22 @@ header nav ul li:last-of-type {
   text-align: center
 }
 
+.is_taken {
+  font-size: 1.4rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center
+}
+
+.true--donation {
+  color: green;
+}
+
+.false--donation {
+  color: red;
+}
+
+
 /* line 1, scss/modules/_footer.scss */
 footer {
   min-height: 80vh;
