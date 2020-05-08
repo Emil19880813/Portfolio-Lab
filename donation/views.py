@@ -124,11 +124,23 @@ class DeleteUser(View):
 
 
 class ProfilUser(View):
-    def get(self, request, user_id):
-        user = User.objects.get(pk=user_id)
+    def get(self, request):
+        user = request.user
         donation_list = user.donations.all().order_by('is_taken', 'pick_up_date', 'pick_up_time', 'date_of_entry')
-        #archived_donations = Donation.objects.filter(pk=user_id, is_taken=True).
-        return render(request, "profil_user.html", context={"user": user, 'donations': donation_list})
+        return render(request, "profil_user.html", context={'user': user, 'donations': donation_list})
+
+
+class ArchiveDonations(View):
+    def get(self, request, donation_id):
+        donation = Donation.objects.get(pk=donation_id)
+        if donation.is_taken:
+            donation.is_taken = False
+            donation.save()
+        else:
+            donation.is_taken = True
+            donation.save()
+        return redirect(f'profil')
+
 
 
 

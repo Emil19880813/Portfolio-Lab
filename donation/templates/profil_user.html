@@ -24,8 +24,10 @@
                 {% if donation.is_taken %}
                     <!-- do zrobienia walidacji pól zależnych "is_taken" i "data odbioru" -->
                     <b class="true--donation">TAK</b>
+                    <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
                 {% else %}
                     <b class="false--donation">NIE</b>
+                    <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
                 {% endif %}
             </li>
             {% endfor %}
