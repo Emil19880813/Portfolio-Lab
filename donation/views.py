@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -8,8 +9,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
+from django.utils import timezone
 
-from donation.forms import RegisterForm, LoginForm, UserForm
+import datetime
+
+from donation.forms import RegisterForm, LoginForm, UserForm, SettingsUserForm
 from donation.models import Donation, Institution, Category
 
 '''
@@ -135,14 +139,30 @@ class ArchiveDonations(View):
         donation = Donation.objects.get(pk=donation_id)
         if donation.is_taken:
             donation.is_taken = False
+            donation.pick_up_date = None
+            donation.pick_up_time = None
             donation.save()
         else:
             donation.is_taken = True
+            donation.pick_up_date = datetime.datetime.now()
+            donation.pick_up_time = timezone.now()
             donation.save()
-        return redirect(f'profil')
+        return redirect('profil')
 
+class SettingsUser(View):
+    def get(self, request):
+        user = request.user
+        user_form = SettingsUserForm(instance=user)
+        return render(request, "settings.html", context={"form": user_form})
 
-
+    def post(self, request):
+        user = request.user
+        user_form = SettingsUserForm(request.POST, instance=user)
+        if user_form.is_valid():
+            if user.check_password(user_form.cleaned_data.get('password')):
+                user_form.save()
+                return redirect('profil')
+            return redirect('settings')
 
 class FormConfirmationView(TemplateView):
     template_name = "form-confirmation.html"

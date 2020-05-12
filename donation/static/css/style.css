@@ -1514,6 +1514,11 @@ header nav ul li:last-of-type {
   margin-bottom: 10px;
   text-align: center
 }
+.confirmation {
+  font-size: 1.5rem;
+  margin-left: 15px;
+  color: red;
+}
 
 .is_taken {
   font-size: 1.4rem;

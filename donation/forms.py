@@ -73,3 +73,16 @@ class UserForm(forms.ModelForm):
             'is_superuser': 'super użytkownik',
             'is_active': 'konto aktywne',
         }
+
+
+class SettingsUserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj hasło'}))
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        labels = {
+            'first_name': 'imię',
+            'last_name': 'nazwisko',
+            'email': 'adres e-mail',
+        }

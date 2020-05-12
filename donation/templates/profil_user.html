@@ -13,23 +13,19 @@
         <b>lista darów:</b>
         <ul>
             {% for donation in donations %}
-            <li>{{ donation }},
-                {% if donation.pick_up_date == null or donation.pick_up_time == null %}
-                    data odbioru: ---
-                {% else %}
-                    data odbioru: {{ donation.pick_up_date }}, {{ donation.pick_up_time }},
-                {% endif %}
-                    data wpisu: {{ donation.date_of_entry }},
-                odebrany:
                 {% if donation.is_taken %}
                     <!-- do zrobienia walidacji pól zależnych "is_taken" i "data odbioru" -->
-                    <b class="true--donation">TAK</b>
-                    <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
+                    <li style="color: grey">{{ donation }},
+                    data odbioru: {{ donation.pick_up_date }}, {{ donation.pick_up_time }}, data wpisu: {{ donation.date_of_entry }}, odebrany:
+                        <b class="true--donation">TAK</b>
+                        <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
+                    </li>
                 {% else %}
-                    <b class="false--donation">NIE</b>
-                    <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
+                    <li>{{ donation }}, data odbioru: ---, data wpisu: {{ donation.date_of_entry }}, odebrany:
+                        <b class="false--donation">NIE</b>
+                        <a href={% url 'archive' donation.id %}><img src="{% static "trash.png" %}" alt="Trash" width="30%" height="70%"></a>
+                    </li>
                 {% endif %}
-            </li>
             {% endfor %}
         </ul>
         </em>
