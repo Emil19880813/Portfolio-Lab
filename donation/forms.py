@@ -86,3 +86,23 @@ class SettingsUserForm(forms.ModelForm):
             'last_name': 'nazwisko',
             'email': 'adres e-mail',
         }
+
+class ChangePasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj aktualne hasło'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj nowe hasło'}))
+    password3 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj nowe hasło (powtórz)'}))
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password2 = cleaned_data['password2']
+        password3 = cleaned_data['password3']
+        if password2 != password3:
+            raise forms.ValidationError('Podałeś inne hasła')
+
+    def clean_password(self):
+            password = self.cleaned_data['password']
+            user = User.objects.get(username=username)# jak pobrać aktualnego usera
+            if user.check_password(password):
+                return password
+            raise forms.ValidationError('Niepoprawne hasło')

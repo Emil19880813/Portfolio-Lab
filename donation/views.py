@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -13,7 +12,7 @@ from django.utils import timezone
 
 import datetime
 
-from donation.forms import RegisterForm, LoginForm, UserForm, SettingsUserForm
+from donation.forms import RegisterForm, LoginForm, UserForm, SettingsUserForm, ChangePasswordForm
 from donation.models import Donation, Institution, Category
 
 '''
@@ -163,6 +162,20 @@ class SettingsUser(View):
                 user_form.save()
                 return redirect('profil')
             return redirect('settings')
+
+class ChangePassword(View):
+    def get(self, request):
+        form = ChangePasswordForm()
+        return render(request, "change_password.html", context={"form": form})
+    def post(self, request):
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data.get('password2')
+            user = request.user
+            user.set_password(new_password)
+            user.save()
+            return redirect('login')
+        return HttpResponse('bad')
 
 class FormConfirmationView(TemplateView):
     template_name = "form-confirmation.html"

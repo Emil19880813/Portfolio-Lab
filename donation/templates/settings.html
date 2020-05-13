@@ -4,7 +4,7 @@
 {% block title %} Edytowanie danych użytkownika {% endblock %}
 
 {% block content %}
-<section class="edit-user" id="edit-user">
+<section class="settings-user" id="settings-user">
     <h2 class="account-heading">Edycja użytkownika:</h2>
     <form action="#" method="post">
         {% csrf_token %}
@@ -17,6 +17,7 @@
         <div class="form-group">
             <button class="btn" type="submit">Wyślij</button>
         </div>
+        <div><a href={% url 'change-password' %}>Zmień hasło</a></div>
     </form>
 </section>
 {% endblock content %}
