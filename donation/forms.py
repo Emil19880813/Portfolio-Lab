@@ -86,7 +86,7 @@ class SettingsUserForm(forms.ModelForm):
             'last_name': 'nazwisko',
             'email': 'adres e-mail',
         }
-
+'''
 class ChangePasswordForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj aktualne hasło'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Podaj nowe hasło'}))
@@ -106,3 +106,5 @@ class ChangePasswordForm(forms.Form):
             if user.check_password(password):
                 return password
             raise forms.ValidationError('Niepoprawne hasło')
+
+'''

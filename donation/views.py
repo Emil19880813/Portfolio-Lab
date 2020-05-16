@@ -12,7 +12,7 @@ from django.utils import timezone
 
 import datetime
 
-from donation.forms import RegisterForm, LoginForm, UserForm, SettingsUserForm, ChangePasswordForm
+from donation.forms import RegisterForm, LoginForm, UserForm, SettingsUserForm
 from donation.models import Donation, Institution, Category
 
 '''
@@ -163,10 +163,11 @@ class SettingsUser(View):
                 return redirect('profil')
             return redirect('settings')
 
+'''
 class ChangePassword(View):
     def get(self, request):
         form = ChangePasswordForm()
-        return render(request, "change_password.html", context={"form": form})
+        return render(request, "password_change_form.html", context={"form": form})
     def post(self, request):
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
@@ -176,6 +177,6 @@ class ChangePassword(View):
             user.save()
             return redirect('login')
         return HttpResponse('bad')
-
+'''
 class FormConfirmationView(TemplateView):
     template_name = "form-confirmation.html"

@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.urls import path
 
 from donation.views import LandingPage, AddDonation, Login, Register, FormConfirmationView, Logout, AdminPanel, \
-    EditUser, DeleteUser, AddUser, ProfilUser, ArchiveDonations, SettingsUser, ChangePassword
+    EditUser, DeleteUser, ProfilUser, ArchiveDonations, SettingsUser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,8 @@ urlpatterns = [
     path('panel-admin/edit-user/<int:user_id>', EditUser.as_view(), name='edit-user'),
     path('panel-admin/profil/', ProfilUser.as_view(), name='profil'),
     path('panel-admin/settings/', SettingsUser.as_view(), name='settings'),
-    path('panel-admin/settings/change-password/', ChangePassword.as_view(), name='change-password'),
+    path('password_change/', PasswordChangeView.as_view(), name='change-password'),
+    path('password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
     path('panel-admin/profil/<int:donation_id>', ArchiveDonations.as_view(), name='archive'),
     path('panel-admin/delete-user/<int:user_id>', DeleteUser.as_view(), name='delete-user'),
     path('register/', Register.as_view(), name='register'),
